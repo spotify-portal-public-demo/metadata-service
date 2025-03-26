@@ -1,3 +1,16 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: metadata-service-grpc
+  description: "gRPC API for entity metadata"
+spec:
+  type: grpc
+  lifecycle: production
+  owner: "group:default/content"
+  definition:
+    $text: ./src/main/proto/metadata.proto
+---
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
@@ -19,3 +32,5 @@ spec:
   type: service
   lifecycle: production
   owner: "group:default/content"
+  providesApis:
+    - metadata-service-grpc
