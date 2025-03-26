@@ -34,3 +34,11 @@ spec:
   owner: "group:default/content"
   providesApis:
     - metadata-service-grpc
+  consumesApis:
+    - track-service-grpc
+    - album-service-grpc
+    - artist-service-grpc
+  dependsOn:
+    - component:track-service
+    - component:album-service
+    - component:artist-service
