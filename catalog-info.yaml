@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: metadata-service
+  description: "gRPC service for entity metadata"
+  tags:
+    - java
+    - grpc
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: spotify-portal-public-demo/metadata-service
+    sonarqube.org/project-key: spotify-portal-public-demo_metadata-service
+    grafana/dashboard-selector: metadata-service
+    backstage.io/kubernetes-id: metadata-service
+    backstage.io/kubernetes-namespace: metadata-service
+    backstage.io/kubernetes-label-selector: app=metadata-service
+spec:
+  type: service
+  lifecycle: experimental
+  owner: "group:default/content"
+  system: "system:default/metadata"

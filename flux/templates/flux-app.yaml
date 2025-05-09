@@ -1,0 +1,74 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: ${{ values.component_id }}
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  secretRef:
+    name: flux-system
+  url: https://github.com/${{ values.destination.owner }}/${{ values.destination.repo }}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ${{ values.component_id }}
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./kubernetes
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: ${{ values.component_id }}
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: ${{ values.component_id }}
+  namespace: flux-system
+spec:
+  image: ghcr.io/${{ values.destination.owner }}/${{ values.destination.repo }}
+  interval: 5m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: ${{ values.component_id }}
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: ${{ values.component_id }}
+  filterTags:
+    pattern: "^main-[a-fA-F0-9]+-(?P<ts>.*)"
+    extract: "$ts"
+  policy:
+    numerical:
+      order: asc
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageUpdateAutomation
+metadata:
+  name: ${{ values.component_id }}
+  namespace: flux-system
+spec:
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: ${{ values.component_id }}
+  git:
+    checkout:
+      ref:
+        branch: main
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+      messageTemplate: "[skip ci] {{range .Changed.Changes}}{{print .OldValue}} -> {{println .NewValue}}{{end}}"
+    push:
+      branch: main
+  update:
+    path: ./kubernetes
+    strategy: Setters
