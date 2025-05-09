@@ -1,0 +1,8 @@
+site_name: "metadata-service"
+site_description: "gRPC service for entity metadata"
+
+nav:
+  - Introduction: index.md
+
+plugins:
+  - techdocs-core
