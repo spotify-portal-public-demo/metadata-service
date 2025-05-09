@@ -23,12 +23,13 @@ metadata:
     github.com/project-slug: spotify-portal-public-demo/metadata-service
     sonarqube.org/project-key: spotify-portal-public-demo_metadata-service
     grafana/dashboard-selector: metadata-service
+    grafana/alert-label-selector: service_name=metadata-service
     backstage.io/kubernetes-id: metadata-service
     backstage.io/kubernetes-namespace: metadata-service
     backstage.io/kubernetes-label-selector: app=metadata-service
 spec:
   type: service
-  lifecycle: experimental
+  lifecycle: production
   owner: "group:default/content"
   system: "system:default/metadata"
   providesApis:
