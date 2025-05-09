@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: metadata-service
-          image: ghcr.io/spotify-portal-public-demo/metadata-service:main-d14ae929-1746799107 # {"$imagepolicy": "flux-system:metadata-service"}
+          image: ghcr.io/spotify-portal-public-demo/metadata-service:main-bc54869c-1746805663 # {"$imagepolicy": "flux-system:metadata-service"}
           imagePullPolicy: Always
           resources:
             requests:
