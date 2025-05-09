@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.spotify.demo.metadata.proto";
+option java_outer_classname = "MetadataProto";
+
+service MetadataService {
+  rpc GetTracks (GetTracksRequest) returns (GetTracksResponse) {}
+  rpc GetAlbums (GetAlbumsRequest) returns (GetAlbumsResponse) {}
+  rpc GetArtists (GetArtistsRequest) returns (GetArtistsResponse) {}
+}
+
+message GetTracksRequest {
+  repeated string ids = 1;
+}
+
+message GetTracksResponse {
+  repeated Track tracks = 1;
+}
+
+message GetAlbumsRequest {
+  repeated string ids = 1;
+}
+
+message GetAlbumsResponse {
+  repeated Album albums = 1;
+}
+
+message GetArtistsRequest {
+  repeated string ids = 1;
+}
+
+message GetArtistsResponse {
+  repeated Artist artists = 1;
+}
+
+// copy from track-service
+message Track {
+  string id = 1;
+  string isrc = 2;
+  string title = 3;
+  int32 duration = 4;
+  string album_id = 6;
+  repeated string artist_ids = 5;
+}
+
+// copy from album-service
+message Album {
+  string id = 1;
+  string title = 2;
+  int32 total_tracks = 3;
+  int32 duration = 4;
+  string release_date = 5;
+  string label = 6;
+  repeated string artist_ids = 7;
+}
+
+// copy from artist-service
+message Artist {
+  string id = 1;
+  string name = 2;
+  repeated string aliases = 3;
+}
