@@ -39,6 +39,7 @@ spec:
     - album-service-grpc
     - artist-service-grpc
   dependsOn:
+    - resource:metadata-service-cache
     - component:track-service
     - component:album-service
     - component:artist-service
