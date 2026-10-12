@@ -1,5 +1,5 @@
 site_name: "metadata-service"
-site_description: "gRPC service for entity metadata on Java 26"
+site_description: "gRPC service for entity metadata targeting Java 26 with a bootstrapped Corretto toolchain for builds"
 
 nav:
   - Introduction: index.md

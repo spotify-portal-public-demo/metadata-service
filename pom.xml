@@ -83,6 +83,47 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.2</version>
+        <executions>
+          <execution>
+            <id>prepare-java-26</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>sh</executable>
+              <arguments>
+                <argument>-c</argument>
+                <argument><![CDATA[
+set -eu
+jdk_dir='${project.build.directory}/java-26'
+if [ -x "$jdk_dir/bin/java" ] && [ -x "$jdk_dir/bin/javac" ]; then
+  exit 0
+fi
+
+current_javac="$(command -v javac || true)"
+if [ -n "$current_javac" ] && "$current_javac" --version | grep -Eq '^javac 2[6-9](\.|$)|^javac [3-9][0-9](\.|$)'; then
+  current_java_home="$(dirname "$(dirname "$(readlink -f "$current_javac")")")"
+  rm -rf "$jdk_dir"
+  ln -s "$current_java_home" "$jdk_dir"
+  exit 0
+fi
+
+archive='${project.build.directory}/amazon-corretto-26.tar.gz'
+rm -rf "$jdk_dir"
+mkdir -p "$jdk_dir"
+curl -fsSL 'https://corretto.aws/downloads/latest/amazon-corretto-26-x64-linux-jdk.tar.gz' -o "$archive"
+tar -xzf "$archive" --strip-components=1 -C "$jdk_dir"
+]]></argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>kr.motd.maven</groupId>
         <artifactId>os-maven-plugin</artifactId>
         <version>1.7.1</version>
@@ -117,6 +158,19 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <executable>${project.build.directory}/java-26/bin/javac</executable>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <jvm>${project.build.directory}/java-26/bin/java</jvm>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>

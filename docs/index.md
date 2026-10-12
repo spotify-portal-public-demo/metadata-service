@@ -2,7 +2,7 @@
 
 gRPC service for entity metadata
 
-This service targets Java 26 for local development, CI, and container builds.
+This service targets Java 26 for local development, CI, and container builds. Maven also bootstraps a local Corretto 26 toolchain when the host default JDK is older, so compile and test still run against Java 26.
 
 ## Getting started
 
