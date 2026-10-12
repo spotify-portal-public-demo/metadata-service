@@ -1,5 +1,5 @@
 site_name: "metadata-service"
-site_description: "gRPC service for entity metadata"
+site_description: "gRPC service for entity metadata on Java 26"
 
 nav:
   - Introduction: index.md
