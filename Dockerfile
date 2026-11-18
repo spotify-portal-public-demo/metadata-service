@@ -1,4 +1,4 @@
-FROM amazoncorretto:21-alpine
+FROM amazoncorretto:26-alpine
 ENTRYPOINT ["/usr/bin/metadata-service.sh"]
 
 COPY metadata-service.sh /usr/bin/metadata-service.sh
